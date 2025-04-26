@@ -3,7 +3,6 @@ import QRCode from "react-qr-code";
 
 const QRCodePage: React.FC = () => {
   const url = `https://${import.meta.env.VITE_DEV_NGROK_URL}`;
-  console.log(url);
   return (
     <div
       style={{
