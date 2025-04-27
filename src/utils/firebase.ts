@@ -9,12 +9,12 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCWTBOtLWhJNosSq-gH0kJewEDv_-o2H1c",
-  authDomain: "coffee-mobile-order-app.firebaseapp.com",
-  projectId: "coffee-mobile-order-app",
-  storageBucket: "coffee-mobile-order-app.firebasestorage.app",
-  messagingSenderId: "651679037341",
-  appId: "1:651679037341:web:19ca702c3edcb65b38e174",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase
