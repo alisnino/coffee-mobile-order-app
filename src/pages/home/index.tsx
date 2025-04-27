@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import { Product, Category } from "../../types/firebase";
 import { fetchMasterData } from "../../utils/firebase";
-import { Flex, Text, Separator } from "@chakra-ui/react";
+import { Flex, Text, Separator, Button } from "@chakra-ui/react";
 import ProductCard from "../../components/product-card";
 import ProductModal from "../../components/product-modal";
+import { useAuth } from "../../contexts/auth";
 
 const HomePage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const { logout } = useAuth();
+
   useEffect(() => {
     const fetchData = async () => {
       const { categories, products } = await fetchMasterData();
@@ -57,6 +60,7 @@ const HomePage: React.FC = () => {
           </Flex>
         </Flex>
       ))}
+      <Button onClick={logout}>Logout</Button>
     </Flex>
   );
 };
