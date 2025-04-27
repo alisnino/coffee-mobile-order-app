@@ -6,27 +6,36 @@ import QRCodePage from "./pages/admin/qr/index.tsx";
 import HomePage from "./pages/home/index.tsx";
 import { AuthProvider } from "./contexts/auth.tsx";
 import LoginPage from "./pages/login/index.tsx";
-import RequireAuth from "./layouts/requireAuth/index.tsx";
+import RequireAuth from "./layouts/require-auth/index.tsx";
+import DefaultLayout from "./layouts/default-layout/index.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <RequireAuth>
-        <HomePage />
-      </RequireAuth>
+      <DefaultLayout>
+        <RequireAuth>
+          <HomePage />
+        </RequireAuth>
+      </DefaultLayout>
     ),
   },
   {
     path: "/admin/qr",
     element: (
-      <RequireAuth>
-        <QRCodePage />
-      </RequireAuth>
+      <DefaultLayout>
+        <RequireAuth>
+          <QRCodePage />
+        </RequireAuth>
+      </DefaultLayout>
     ),
   },
   {
     path: "/login",
-    element: <LoginPage />,
+    element: (
+      <DefaultLayout>
+        <LoginPage />
+      </DefaultLayout>
+    ),
   },
 ]);
 
