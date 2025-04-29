@@ -1,6 +1,15 @@
-import { Button, Flex, Drawer, Portal, CloseButton } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Drawer,
+  Portal,
+  CloseButton,
+  Text,
+} from "@chakra-ui/react";
 import { useAuth } from "../../contexts/auth";
 import { useMemo } from "react";
+import { headerHeight } from "../../utils/const";
+import { FaBars } from "react-icons/fa6";
 
 const Header: React.FC = () => {
   const { user, logout } = useAuth();
@@ -29,6 +38,7 @@ const Header: React.FC = () => {
         padding: "1rem",
         backgroundColor: "gray.100",
         width: "100%",
+        height: headerHeight,
         position: "fixed",
         top: 0,
         left: 0,
@@ -36,7 +46,11 @@ const Header: React.FC = () => {
     >
       <Drawer.Root>
         <Drawer.Trigger asChild>
-          <Button>Menu</Button>
+          <Button height="100%" width="2rem" unstyled>
+            <Flex justifyContent="center" alignItems="center">
+              <Text as={FaBars} />
+            </Flex>
+          </Button>
         </Drawer.Trigger>
         <Portal>
           <Drawer.Backdrop />

@@ -12,3 +12,17 @@ export type Product = {
   categoryId: string;
   displayOrder: number;
 };
+
+export type OrderItem = {
+  productId: string;
+  quantity: number;
+};
+
+export type OrderStatus = "pending" | "delivered" | "cancelled";
+
+export type Order = {
+  id: string;
+  items: OrderItem[];
+  orderDate: Date;
+  status: OrderStatus;
+};

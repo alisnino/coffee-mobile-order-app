@@ -1,13 +1,18 @@
 import React from "react";
 import { Product } from "../../types/firebase";
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 export type ProductCardProps = {
   product: Product;
   onClick: () => void;
+  quantity: number | undefined;
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onClick,
+  quantity,
+}) => {
   return (
     <Flex
       css={{
@@ -38,7 +43,32 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
           height: "10rem",
           maxHeight: "10rem",
         }}
-      />
+      >
+        {quantity && (
+          <Flex
+            css={{
+              width: "100%",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              padding: "0.5rem",
+            }}
+          >
+            <Flex
+              css={{
+                height: "2rem",
+                width: "2rem",
+                border: "2px solid orange",
+                borderRadius: "2rem",
+                backgroundColor: "white",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>{quantity}</Text>
+            </Flex>
+          </Flex>
+        )}
+      </Box>
       <Flex
         css={{
           flexDirection: "column",

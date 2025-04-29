@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Product } from "../../types/firebase";
 import {
   Button,
@@ -14,7 +14,7 @@ export type ProductModalProps = {
   product: Product;
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  onConfirm: (productId: string, quantity: number) => void;
   initialQty: number;
 };
 
@@ -26,6 +26,15 @@ const ProductModal: React.FC<ProductModalProps> = ({
   initialQty,
 }) => {
   const [quantity, setQuantity] = useState(initialQty);
+
+  useEffect(() => {
+    setQuantity(initialQty);
+  }, [initialQty]);
+
+  const handleConfirm = () => {
+    onConfirm(product.id, quantity);
+    onClose();
+  };
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -101,7 +110,7 @@ const ProductModal: React.FC<ProductModalProps> = ({
               <Dialog.ActionTrigger asChild>
                 <Button variant="outline">Cancel</Button>
               </Dialog.ActionTrigger>
-              <Button onClick={onConfirm}>Save</Button>
+              <Button onClick={handleConfirm}>Save</Button>
             </Dialog.Footer>
             <Dialog.CloseTrigger top="0" insetEnd="-12" asChild>
               <CloseButton bg="bg" size="sm" />
