@@ -1,6 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
-import { Product, Category, OrderItem } from "../../types/firebase";
-import { fetchMasterData } from "../../utils/firebase";
+import {
+  Product,
+  Category,
+  OrderItem,
+  CreateOrder,
+  Order,
+} from "../../types/firebase";
+import {
+  createOrder,
+  fetchMasterData,
+  fetchPastOrders,
+} from "../../utils/firebase";
 import { Flex, Text, Separator } from "@chakra-ui/react";
 import ProductCard from "../../components/product-card";
 import ProductModal from "../../components/product-modal";
@@ -13,6 +23,9 @@ const HomePage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [pastOrders, setPastOrders] = useState<Order[]>([]);
+
   const selectedProductQty = useMemo(() => {
     return (
       orderItems.find((item) => item.productId === selectedProduct?.id)
@@ -58,12 +71,30 @@ const HomePage: React.FC = () => {
     }
   };
 
+  const handleConfirm = async () => {
+    const order: CreateOrder = {
+      items: orderItems,
+      orderDate: new Date(),
+      status: "pending",
+    };
+    const newOrderId = await createOrder(order);
+    if (newOrderId) {
+      setOrderItems([]);
+      setErrorMessage("");
+      window.location.reload();
+    } else {
+      setErrorMessage("注文に失敗しました");
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const { categories, products } = await fetchMasterData();
+      const pastOrders = await fetchPastOrders();
 
       setCategories(categories);
       setProducts(products);
+      setPastOrders(pastOrders);
     };
     fetchData();
   }, []);
@@ -123,7 +154,12 @@ const HomePage: React.FC = () => {
             </Flex>
           </Flex>
         ))}
-        <CartFooter onConfirm={() => {}} orderItems={orderItemWithNames} />
+        <CartFooter
+          onConfirm={handleConfirm}
+          orderItems={orderItemWithNames}
+          errorMessage={errorMessage}
+          pastOrders={pastOrders}
+        />
       </Flex>
     </Flex>
   );

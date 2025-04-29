@@ -1,7 +1,14 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
-import { Product } from "../types/firebase";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getFirestore,
+  addDoc,
+} from "firebase/firestore";
+import { CreateOrder, Order, Product } from "../types/firebase";
 import { Category } from "../types/firebase";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -65,5 +72,40 @@ export const fetchMasterData = async () => {
   } catch (error) {
     console.error(error);
     return { categories: [], products: [] };
+  }
+};
+
+export const createOrder = async (order: CreateOrder) => {
+  try {
+    const ordersRef = collection(db, "orders");
+    const orderDoc = await addDoc(ordersRef, order);
+    return orderDoc.id;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const fetchPastOrders = async () => {
+  try {
+    const ordersRef = collection(db, "orders");
+    const q = query(
+      ordersRef,
+      where("orderDate", ">=", new Date(new Date().setHours(0, 0, 0, 0)))
+    );
+    const ordersSnapshot = await getDocs(q);
+    const orders: Order[] = ordersSnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        items: data.items,
+        orderDate: data.orderDate,
+        status: data.status,
+      };
+    });
+    return orders;
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 };

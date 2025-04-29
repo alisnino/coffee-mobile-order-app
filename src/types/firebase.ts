@@ -26,3 +26,5 @@ export type Order = {
   orderDate: Date;
   status: OrderStatus;
 };
+
+export type CreateOrder = Omit<Order, "id">;
